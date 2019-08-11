@@ -55,13 +55,37 @@
 			isa = PBXGroup;
 			children = (
 				6E648BD323004CCB009CBB79 /* AppDelegate.swift */,
-				6E648BD523004CCB009CBB79 /* ViewController.swift */,
+				6E648BE523004DF2009CBB79 /* View */,
+				6E648BE623004E0E009CBB79 /* ViewModel */,
+				6E648BE723004E2D009CBB79 /* Model */,
 				6E648BD723004CCB009CBB79 /* Main.storyboard */,
 				6E648BDA23004CCD009CBB79 /* Assets.xcassets */,
 				6E648BDC23004CCD009CBB79 /* LaunchScreen.storyboard */,
 				6E648BDF23004CCD009CBB79 /* Info.plist */,
 			);
 			path = MovieBoardRX;
+			sourceTree = "<group>";
+		};
+		6E648BE523004DF2009CBB79 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				6E648BD523004CCB009CBB79 /* ViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		6E648BE623004E0E009CBB79 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		6E648BE723004E2D009CBB79 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
