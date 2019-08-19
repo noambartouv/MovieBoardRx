@@ -108,9 +108,6 @@ class MovieBoardVM: MovieBoardVMing {
         // ---------------------------------------- images --------------------------------------------
 
         // fetch image from external DB
-        
-        
-        
         let iniateImageRequest = Observable.combineLatest(moviePosterRequest, items.asObservable()).map { (index, items) -> TargetWithIndex? in
             if let imageUrl = items[safe: index]?.imageUrl {
                 let imageTarget = ImagesTarget(posterUrl: imageUrl)
@@ -133,7 +130,6 @@ class MovieBoardVM: MovieBoardVMing {
             .debug("image fetch")
             .filterNil()
             .asDriver()
-
     }
     
 }
