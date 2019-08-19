@@ -15,7 +15,6 @@ class SearchViewController: UIViewController, UISearchBarDelegate {
     
     enum Constants {
         static let searchOptioncell = "SearchOptionCell"
-        
         static let mostPoplular  = "Most Popular"
         static let mostRecent = "Most Recent Releases"
         static let topRated = "Top Rated"
@@ -24,9 +23,9 @@ class SearchViewController: UIViewController, UISearchBarDelegate {
     weak var viewModel: MovieBoardVM? = nil
     
     let searchOptions: [SearchOption] =
-        [SearchOption(textToDisplay: Constants.mostPoplular, urlString: Consts.mostPopularMoviesURL),
-         SearchOption(textToDisplay: Constants.mostRecent, urlString: Consts.mostRecentReleasedMoviesURL),
-         SearchOption(textToDisplay: Constants.topRated, urlString: Consts.topRatedMoviesURL)]
+        [SearchOption(textToDisplay: Constants.mostPoplular, urlString: Consts.searchMoviesByDiscover),
+         SearchOption(textToDisplay: Constants.mostRecent, urlString: Consts.searchMoviesByDiscover),
+         SearchOption(textToDisplay: Constants.topRated, urlString: Consts.searchMoviesByDiscover)]
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let query = searchBar.text else { return }
@@ -37,28 +36,20 @@ class SearchViewController: UIViewController, UISearchBarDelegate {
 
 extension SearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let label = tableView.cellForRow(at: indexPath)?.textLabel?.text
-//        switch label {
-//        case Constants.mostPoplular:
-//            viewModel?.newSearchRequest.onNext(MovieDB.mostPopular(page: 1))
-//        case Constants.mostRecent:
-//            viewModel?.newSearchRequest.onNext(MovieDB.mostRecent(page: 1))
-//        case Constants.topRated:
-//            viewModel?.newSearchRequest.onNext(MovieDB.topRated(page: 1))
-//        default:
-//            viewModel?.newSearchRequest.onNext(MovieDB.mostPopular(page: 1))
-//        }
-        switch indexPath.row {
-        case 0:
+        let cell = tableView.cellForRow(at: indexPath) as? SearchOptionViewCell
+        let label = cell?.searchLabel.text
+        
+        switch label {
+        case Constants.mostPoplular:
             viewModel?.newSearchRequest.onNext(MovieDB.mostPopular(page: 1))
-        case 1:
+        case Constants.mostRecent:
             viewModel?.newSearchRequest.onNext(MovieDB.mostRecent(page: 1))
-        case 2:
+        case Constants.topRated:
             viewModel?.newSearchRequest.onNext(MovieDB.topRated(page: 1))
         default:
             viewModel?.newSearchRequest.onNext(MovieDB.mostPopular(page: 1))
         }
-
+        
         navigationController?.popViewController(animated: true)
     }
 }

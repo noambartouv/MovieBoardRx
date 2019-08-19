@@ -25,14 +25,10 @@ extension MovieDB : TargetType {
     var path: String {
         
         switch self {
-        case .mostPopular(_):
-            return Consts.mostPopularMoviesURL
-        case .topRated(_):
-            return Consts.topRatedMoviesURL
-        case .mostRecent(_):
-            return Consts.mostRecentReleasedMoviesURL
-        case .freeSearch(let query, _):
-            return Consts.withKeywordURL(query: query)
+        case .mostPopular(_), .mostRecent(_), .topRated(_):
+            return Consts.searchMoviesByDiscover
+        case .freeSearch(_):
+            return Consts.searchMovieByKeyword
         }
     }
     
@@ -45,44 +41,28 @@ extension MovieDB : TargetType {
     }
     
     var task: Task {
+        
+        var params = [
+            "api_key": Consts.apiKey,
+            "language": "en-US",
+            "include_adult": "false",]
+        
         switch self {
         case .mostPopular(let page):
-            return .requestParameters(
-                parameters: [
-                    "api_key": Consts.apiKey,
-                    "language": "en-US",
-                    "sort_by": "popularity.desc",
-                    "include_adult": "false",
-                    "page": "\(page)"
-                ], encoding: URLEncoding.default)
+            params["sort_by"] = "popularity.desc"
+            params["page"] = "\(page)"
         case .topRated(let page):
-            return .requestParameters(
-                parameters: [
-                    "api_key": Consts.apiKey,
-                    "language": "en-US",
-                    "sort_by": "vote_average.desc",
-                    "include_adult": "false",
-                    "page": "\(page)"
-                ], encoding: URLEncoding.default)
+            params["sort_by"] = "vote_average.desc"
+            params["page"] = "\(page)"
         case .mostRecent(let page):
-            return .requestParameters(
-                parameters: [
-                    "api_key": Consts.apiKey,
-                    "language": "en-US",
-                    "sort_by": "release_date.desc",
-                    "include_adult": "false",
-                    "page": "\(page)"
-                ], encoding: URLEncoding.default)
+            params["sort_by"] = "release_date.desc"
+            params["page"] = "\(page)"
         case .freeSearch(let query, let page):
-            return .requestParameters(
-                parameters: [
-                    "api_key": Consts.apiKey,
-                    "language": "en-US",
-                    "query": query,
-                    "include_adult": "false",
-                    "page": "\(page)"
-                ], encoding: URLEncoding.default)
+            params["query"] = query
+            params["page"] = "\(page)"
         }
+        
+        return .requestParameters(parameters: params, encoding: URLEncoding.default)
     }
     
     var headers: [String : String]? {

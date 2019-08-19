@@ -32,20 +32,26 @@ class MovieBoardDataSource : NSObject, RxCollectionViewDataSourceType, UICollect
         let imageSource = viewModel.items.flatMap { _items in
             return _items[safe: index]?.image ?? Driver.never()
         }
-
-        imageSource.map { [weak self] _image in
-            guard let self = self else { return }
-            if  _image != nil {
-                // image exists in cache
+        
+        // image exists in cach
+        imageSource
+            .filter { $0 != nil}
+            . map { _image in
                 cell.movieImage.image = _image
-            } else {
-                // set placeholder and fetch image from DB
+            }
+            .drive()
+            .disposed(by: cell.disposeBag)
+        
+        // set placeholder and fetch image from DB
+        imageSource
+            .filter { $0 == nil }
+            .map { [weak self] _ in
+                guard let self = self else { return }
                 cell.movieImage.image = UIImage(named: "PlaceHolder")
                 self.viewModel.moviePosterRequest.onNext(index)
             }
-        }
-        .drive()
-        .disposed(by: cell.disposeBag)
+            .drive()
+            .disposed(by: cell.disposeBag)
         
         return cell
     }
@@ -59,7 +65,7 @@ class MovieBoardDataSource : NSObject, RxCollectionViewDataSourceType, UICollect
         // scroll back to top on new request
         viewModel.itemsPageCount.filter { _page in _page == 1 }.map { _ in
             collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-        }
+            }
             .drive()
             .disposed(by: disposeBag)
     }

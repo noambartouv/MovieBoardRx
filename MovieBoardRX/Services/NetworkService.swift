@@ -55,24 +55,24 @@ class NetworkService : Networking {
                 guard let self = self else { return Observable.never() }
                 
                 let request: Single<Response>
-                let isNewSearch: Bool // TODO: This should be implemented better
+                let newSearch: Bool
                 
                 switch _searchFor {
                 case .mostPopular(let page):
                     request = self.movieDBProvider.rx.request(.mostPopular(page: page), callbackQueue: DispatchQueue.main)
-                    isNewSearch = page == 1
+                    newSearch = self.isNewSearch(page: page)
                 case .topRated(let page):
                     request = self.movieDBProvider.rx.request(.topRated(page: page), callbackQueue: DispatchQueue.main)
-                    isNewSearch = page == 1
+                    newSearch = self.isNewSearch(page: page)
                 case .mostRecent(let page):
                     request = self.movieDBProvider.rx.request(.mostRecent(page: page), callbackQueue: DispatchQueue.main)
-                    isNewSearch = page == 1
+                    newSearch = self.isNewSearch(page: page)
                 case .freeSearch(let query, let page):
                     request = self.movieDBProvider.rx.request(.freeSearch(query: query, page: page), callbackQueue: DispatchQueue.main)
-                    isNewSearch = page == 1
+                    newSearch = self.isNewSearch(page: page)
                 }
                 
-                return Observable.combineLatest(request.asObservable(), Observable.just(isNewSearch))
+                return Observable.combineLatest(request.asObservable(), Observable.just(newSearch))
             }
         
         
@@ -94,7 +94,7 @@ class NetworkService : Networking {
                 let _image = self.imagesProvider.rx.request(.init(posterUrl: posterUrl.posterUrl))
                     .map { response -> UIImage? in
                         return UIImage(data: response.data)
-                }.asObservable()
+                    }.asObservable()
                 
                 let _index = Observable.just(index)
                 
@@ -102,6 +102,10 @@ class NetworkService : Networking {
         }
         
         moyaFetchImage.bind(to: _imageStream)
+    }
+    
+    private func isNewSearch(page: Int) -> Bool {
+        return page == 1
     }
     
 }

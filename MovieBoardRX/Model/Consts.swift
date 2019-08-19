@@ -19,15 +19,8 @@ struct Consts {
     static let queryBaseURL: String = "https://api.themoviedb.org/3"
     static let imageBaseURL: String = "https://image.tmdb.org/t/p/w185"
     
-    // URLS
-    static let mostPopularMoviesURL: String = "/discover/movie" //?api_key=\(apiKey)&language=en-US&sort_by=popularity.desc&include_adult=false"
-    
-    static let mostRecentReleasedMoviesURL: String = "/discover/movie" //?api_key=\(apiKey)&language=en-US&sort_by=release_date.desc&include_adult=false"
-    
-    static let topRatedMoviesURL: String = "/discover/movie" //?api_key=\(apiKey)&language=en-US&sort_by=vote_average.desc&include_adult=false"
-    
-    static func withKeywordURL(query: String) -> String {
-        return "/search/movie" //?api_key=\(apiKey)&language=en-US&&query=\(query)&include_adult=false"
-    }
+    // URL paths
+    static let searchMoviesByDiscover: String = "/discover/movie"
+    static let searchMovieByKeyword: String = "/search/movie"
     
 }

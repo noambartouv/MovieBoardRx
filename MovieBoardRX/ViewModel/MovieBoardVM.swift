@@ -59,7 +59,7 @@ class MovieBoardVM: MovieBoardVMing {
                 print ("num of results: \(result.count)")
                 return result
             })            
-        .asDriver()
+            .asDriver()
         
         // page number tracking
         itemsPageCount = operationOnCurrentSearch.scan(1, accumulator: { (oldPageNumber, op) -> Int in
@@ -71,13 +71,13 @@ class MovieBoardVM: MovieBoardVMing {
             case .doNothing:
                 return oldPageNumber
             }
-        })
+            })
             .asDriver()
             .debug("pageNumber")
         
         let resetPageCount = newSearchRequest.map { _ -> pageOperations in
             return .reset
-        }
+            }
         
         resetPageCount.bind(to: self.operationOnCurrentSearch)
         
@@ -108,6 +108,9 @@ class MovieBoardVM: MovieBoardVMing {
         // ---------------------------------------- images --------------------------------------------
 
         // fetch image from external DB
+        
+        
+        
         let iniateImageRequest = Observable.combineLatest(moviePosterRequest, items.asObservable()).map { (index, items) -> TargetWithIndex? in
             if let imageUrl = items[safe: index]?.imageUrl {
                 let imageTarget = ImagesTarget(posterUrl: imageUrl)
