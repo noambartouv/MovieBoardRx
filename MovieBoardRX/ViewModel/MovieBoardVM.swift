@@ -80,6 +80,7 @@ class MovieBoardVM: MovieBoardVMing {
             }
         
         resetPageCount.bind(to: self.operationOnCurrentSearch)
+            .disposed(by: disposeBag)
         
         // movie searches and additional page requests
         let fetchAnotherPage = Observable.combineLatest(newSearchRequest, itemsPageCount.asObservable())

@@ -84,6 +84,7 @@ class NetworkService : Networking {
         }
         
         moyaMoviesResponse.bind(to: _moviesRawDataStream)
+            .disposed(by: disposeBag)
         
         
         // image requests
@@ -102,6 +103,7 @@ class NetworkService : Networking {
         }
         
         moyaFetchImage.bind(to: _imageStream)
+            .disposed(by: disposeBag)
     }
     
     private func isNewSearch(page: Int) -> Bool {
